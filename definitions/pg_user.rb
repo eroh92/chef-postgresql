@@ -1,10 +1,10 @@
-define :pg_user, action: :create do
+define :pg_user, :action => :create do
   case params[:action]
   when :create
     privileges = {
-      superuser: false,
-      createdb: false,
-      login: true
+      :superuser => false,
+      :createdb => false,
+      :login => true
     }
     privileges.merge! params[:privileges] if params[:privileges]
 
@@ -27,13 +27,13 @@ define :pg_user, action: :create do
     execute "altering pg user #{params[:name]}" do
       user "postgres"
       command %(psql -c "ALTER ROLE #{sql}")
-      only_if exists, user: "postgres"
+      only_if exists, :user => "postgres"
     end
 
     execute "creating pg user #{params[:name]}" do
       user "postgres"
       command %(psql -c "CREATE ROLE #{sql}")
-      not_if exists, user: "postgres"
+      not_if exists, :user => "postgres"
     end
 
   when :drop

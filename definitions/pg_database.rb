@@ -1,14 +1,14 @@
 define :pg_database, :action => :create do
 
   defaults    = {
-    user: "postgres",
-    username: nil,
-    host: nil,
-    port: nil,
-    encoding: "utf8",
-    locale: nil,
-    template: nil,
-    owner: nil,
+    :user => "postgres",
+    :username => nil,
+    :host => nil,
+    :port => nil,
+    :encoding => "utf8",
+    :locale => nil,
+    :template => nil,
+    :owner => nil,
   }
   
   defaults.merge! params
@@ -39,7 +39,7 @@ define :pg_database, :action => :create do
     execute "creating pg database #{params[:name]}" do
       user defaults[:user]
       command createdb
-      not_if exists, user: defaults[:user]
+      not_if exists, :user => defaults[:user]
     end
 
   when :drop
@@ -55,7 +55,7 @@ define :pg_database, :action => :create do
     execute "dropping pg database #{params[:name]}" do
       user defaults[:user]
       command dropdb
-      only_if exists, user: defaults[:user]
+      only_if exists, :user => defaults[:user]
     end
   end
 end
