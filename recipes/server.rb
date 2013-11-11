@@ -24,8 +24,3 @@ include_recipe "postgresql::configuration"
 # declare the system service
 include_recipe "postgresql::service"
 
-# setup users
-include_recipe "postgresql::pg_user"
-
-# setup databases
-include_recipe "postgresql::pg_database"
