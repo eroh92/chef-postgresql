@@ -11,7 +11,7 @@ define :pg_database_extensions, :action => :create do
     languages.each do |language|
       execute "createlang #{language} #{dbname}" do
         user "postgres"
-        not_if "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{dbname} | grep '^ #{language}$'", user: "postgres"
+        not_if "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{dbname} | grep '^ #{language}$'", :user => "postgres"
       end
     end
 
