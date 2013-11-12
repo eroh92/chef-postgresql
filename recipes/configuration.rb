@@ -3,6 +3,7 @@
 # Recipe:: configuration
 #
 
+include_recipe "postgresql::config_pgtune"
 
 pg_version = node["postgresql"]["version"]
 

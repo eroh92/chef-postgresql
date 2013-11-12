@@ -144,7 +144,7 @@ mem = total_memory.split("kB")[0].to_i / 1024 # in MB
 
 # (1) max_connections
 #     Sets the maximum number of concurrent connections.
-node.default['postgresql']['config']['max_connections'] = con
+node.default['postgresql']['max_connections'] = con
 
 # The calculations for the next four settings would not be optimal
 # for low memory systems. In that case, the calculation is skipped,
@@ -176,7 +176,7 @@ if (mem >= 256)
     end
   end
 
-  node.default['postgresql']['config']['shared_buffers'] = binaryround(shared_buffers*1024*1024)
+  node.default['postgresql']['shared_buffers'] = binaryround(shared_buffers*1024*1024)
 
   # (3) effective_cache_size
   #     Sets the planner's assumption about the size of the disk cache.
@@ -190,7 +190,7 @@ if (mem >= 256)
     "desktop" => mem / 4
   }.fetch(db_type)
 
-  node.default['postgresql']['config']['effective_cache_size'] = binaryround(effective_cache_size*1024*1024)
+  node.default['postgresql']['effective_cache_size'] = binaryround(effective_cache_size*1024*1024)
 
   # (4) work_mem
   #     Sets the maximum memory to be used for query workspaces.
@@ -202,7 +202,7 @@ if (mem >= 256)
     "desktop" => mem / con / 6
   }.fetch(db_type)
 
-  node.default['postgresql']['config']['work_mem'] = binaryround(work_mem*1024*1024)
+  node.default['postgresql']['work_mem'] = binaryround(work_mem*1024*1024)
 
   # (5) maintenance_work_mem
   #     Sets the maximum memory to be used for maintenance operations.
@@ -220,7 +220,7 @@ if (mem >= 256)
       maintenance_work_mem = 1*1024
   end
 
-  node.default['postgresql']['config']['maintenance_work_mem'] = binaryround(maintenance_work_mem*1024*1024)
+  node.default['postgresql']['maintenance_work_mem'] = binaryround(maintenance_work_mem*1024*1024)
 
 end
 
@@ -238,7 +238,7 @@ checkpoint_segments =
   "desktop" => 3
 }.fetch(db_type)
 
-node.default['postgresql']['config']['checkpoint_segments'] = checkpoint_segments
+node.default['postgresql']['checkpoint_segments'] = checkpoint_segments
 
 # (7) checkpoint_completion_target
 #     Time spent flushing dirty buffers during checkpoint, as fraction
@@ -251,7 +251,7 @@ checkpoint_completion_target =
   "desktop" => "0.5"
 }.fetch(db_type)
 
-node.default['postgresql']['config']['checkpoint_completion_target'] = checkpoint_completion_target
+node.default['postgresql']['checkpoint_completion_target'] = checkpoint_completion_target
 
 # (8) wal_buffers
 #     Sets the number of disk-page buffers in shared memory for WAL.
@@ -260,9 +260,9 @@ node.default['postgresql']['config']['checkpoint_completion_target'] = checkpoin
 if node['postgresql']['version'].to_f < 9.1
   wal_buffers = 512 * checkpoint_segments
   # The pgtune seems to use 1kB units for wal_buffers
-  node.default['postgresql']['config']['wal_buffers'] = binaryround(wal_buffers*1024)
+  node.default['postgresql']['wal_buffers'] = binaryround(wal_buffers*1024)
 else
-  node.default['postgresql']['config']['wal_buffers'] = "-1"
+  node.default['postgresql']['wal_buffers'] = "-1"
 end
 
 # (9) default_statistics_target
@@ -277,4 +277,4 @@ default_statistics_target =
   "desktop" => 100
 }.fetch(db_type)
 
-node.default['postgresql']['config']['default_statistics_target'] = default_statistics_target
+node.default['postgresql']['default_statistics_target'] = default_statistics_target
